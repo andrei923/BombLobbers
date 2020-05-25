@@ -1,4 +1,4 @@
-# ➭ FFA for Minecraft.
+# ➭ Bomb Lobbers Minigame for Minecraft.
 
 # ➭ Dependencies:
 > ▪ Skript ➥ https://github.com/SkriptLang/Skript/releases
