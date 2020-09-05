@@ -22,7 +22,7 @@ import:
 options:
 
 	#do not touch this -_-
-	plugin-version: 1.0.0
+	plugin-version: 1.0.1
 
 
 local effect create scoreboard for %player%:	
@@ -648,6 +648,7 @@ function bmb_show_blood(p: player):
 		FastParticle.spawnParticle({_w}, ParticleType.BLOCK_CRACK, {_loc}, 3 and {_material})
 
 function bmb_win(arena: text, team: text):
+	set {-bmb::cache::arena::%{_arena}%::status} to "RESTARTING"
 	loop yaml list "Messages.Summary" from "leaf.bmb.config":
 		set {_msg} to loop-value-1
 		replace all "{team}" with yaml value "Settings.TeamFormat.Name.%{_team}%" from "leaf.bmb.config" in {_msg}
