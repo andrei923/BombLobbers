@@ -366,7 +366,6 @@ on load:
 	{_sb}.getTeam("BMB.Red") is not set:
 		set {_red} to {_sb}.registerNewTeam("BMB.Red")
 		{_red}.setPrefix("&8c")		
-
 	set {-bmb::cache::Material.Red} to new MaterialData(Material.STAINED_CLAY)
 	{-bmb::cache::Material.Red}.setData(14)
 	set {-bmb::cache::Material.Blue} to new MaterialData(Material.STAINED_CLAY)
@@ -399,6 +398,30 @@ function bmb_stats(p: player, do: text, type: text = "Check", amount: number = 1
 		set yaml value "Stats.%{_type}%" from "leaf.bmb.playerdata.%uuid of {_p}%" to yaml value "Stats.%{_type}%" from "leaf.bmb.playerdata.%uuid of {_p}%" + {_amount}
 	save yaml "leaf.bmb.playerdata.%uuid of {_p}%"
 
+function bmb_inventory_manager(p: player, type: text):
+	set {_int} to 0
+	if {_type} = "save":
+		{-bmb::cache::player::%{_p}%::inventory::*} is set:
+			stop
+		loop 36 times:
+			if slot {_int} of {_p}'s inventory != air:
+				set {-bmb::cache::player::%{_p}%::inventory::%{_int}%} to slot {_int} of {_p}'s inventory
+			add 1 to {_int}
+		set {-bmb::cache::player::%{_p}%::inventory::Helmet} to {_p}'s helmet
+		set {-bmb::cache::player::%{_p}%::inventory::Chestplate} to {_p}'s chestplate
+		set {-bmb::cache::player::%{_p}%::inventory::Leggings} to {_p}'s legging
+		set {-bmb::cache::player::%{_p}%::inventory::Boots} to {_p}'s boots	
+	if {_type} = "restore":
+		loop 36 times:
+			{-bmb::cache::player::%{_p}%::inventory::%{_int}%} is set:
+				set slot {_int} of {_p}'s inventory to {-bmb::cache::player::%{_p}%::inventory::%{_int}%}
+			add 1 to {_int}
+		set {_p}'s helmet to {-bmb::cache::player::%{_p}%::inventory::Helmet}
+		set {_p}'s chestplate to {-bmb::cache::player::%{_p}%::inventory::Chestplate}
+		set {_p}'s legging to {-bmb::cache::player::%{_p}%::inventory::Leggings}
+		set {_p}'s boots to {-bmb::cache::player::%{_p}%::inventory::Boots}
+		delete {-bmb::cache::player::%{_p}%::inventory::*}
+
 function bmb_leave(p: player):
 	if {-bmb::cache::player::%{_p}%::state} is set:
 		if {-bmb::cache::player::%{_p}%::state} is "IN-GAME":
@@ -410,17 +433,19 @@ function bmb_leave(p: player):
 		delete scoreboard of {_p}
 		teleport {_p} to yaml value "Locations.MainLobby" from "leaf.bmb.config"		
 		bmb_team_tag({_p}, false)
+        bmb_inventory_manager({_p}, "restore")
 		
 function bmb_join(p: player, arena: text):	
 	if {-bmb::cache::player::%{_p}%::state} is not set:
 		if yaml value "%{_arena}%.State" from "leaf.bmb.arenas" is "ready":
 			if {-bmb::cache::arena::%{_arena}%::status} is "WAITING" or "STARTING":
 				if size of {-bmb::cache::arena::%{_arena}%::ninjas::*} < yaml value "%{_arena}%.Settings.MaxPlayers" from "leaf.bmb.arenas":
-					bmb_clear_player({_p})
+                    bmb_inventory_manager({_p}, "save")
 					set {-bmb::cache::player::%{_p}%::state} to "IN-GAME"
 					set {-bmb::cache::player::%{_p}%::arena} to {_arena}
 					teleport {_p} to yaml value "%{_arena}%.Spawn.Lobby" from "leaf.bmb.arenas"
-					bmb_createBoard({_p}, "BMB-WAITING")					
+					bmb_createBoard({_p}, "BMB-WAITING")
+                    bmb_clear_player({_p})					
 					set slot yaml value "Settings.Items.Leave.Slot" from "leaf.bmb.config" of {_p} to {-bmb::cache::Items::Leave}
 					add {_p} to {-bmb::cache::arena::%{_arena}%::ninjas::*}		
 					if size of {-bmb::cache::arena::%{_arena}%::ninjas::*} = yaml value "%{_arena}%.Settings.MinPlayers" from "leaf.bmb.arenas":
