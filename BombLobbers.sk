@@ -428,12 +428,13 @@ function bmb_leave(p: player):
 			set {_arena} to {-bmb::cache::player::%{_p}%::arena}			
 			bmb_remove_from_game({_p}, true)
 			send replacer "{player}" with {_p}'s display name in yaml value "Messages.Leave" from "leaf.bmb.config" to {-bmb::cache::arena::%{-bmb::cache::player::%{_p}%::arena}%::ninjas::*}	
-		delete {-bmb::cache::player::%{_p}%::*}	
 		bmb_clear_player({_p})
 		delete scoreboard of {_p}
 		teleport {_p} to yaml value "Locations.MainLobby" from "leaf.bmb.config"		
 		bmb_team_tag({_p}, false)
         bmb_inventory_manager({_p}, "restore")
+		wait a tick
+		delete {-bmb::cache::player::%{_p}%::*}	
 		
 function bmb_join(p: player, arena: text):	
 	if {-bmb::cache::player::%{_p}%::state} is not set:
