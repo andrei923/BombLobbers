@@ -1,47 +1,22 @@
 import:
-	java.lang.Math
 	java.util.Arrays 
 	java.util.ArrayList	
+	org.bukkit.Bukkit		
 	org.bukkit.Sound	
 	org.bukkit.Material		
 	org.bukkit.material.MaterialData	 	
-	org.bukkit.Location
-	org.bukkit.Color	
-	org.bukkit.Bukkit
-	org.bukkit.util.EulerAngle 
-	org.bukkit.util.Vector	
 	com.leaf.nbt.nbtapi.NBTItem
 	com.leaf.nbt.nbtapi.NBTEntity	
 	com.leaf.nbt.nbtapi.NBTContainer	
 	fr.mrmicky.fastparticle.FastParticle
 	fr.mrmicky.fastparticle.ParticleType	
 	org.bukkit.event.player.PlayerInteractEvent
-	org.bukkit.event.player.PlayerToggleFlightEvent
 	org.bukkit.event.player.PlayerArmorStandManipulateEvent	
 	
 options:
 
 	#do not touch this -_-
-	plugin-version: 1.0.1
-
-
-local effect create scoreboard for %player%:	
-	trigger:
-		if {-bmb::cache::TitleManager}.hasScoreboard(expr-1) is true:
-			{-bmb::cache::TitleManager}.removeScoreboard(expr-1)
-		{-bmb::cache::TitleManager}.giveScoreboard(expr-1)
-
-local effect delete scoreboard of %player%:	
-	trigger:
-		{-bmb::cache::TitleManager}.removeScoreboard(expr-1)	
-
-local effect set scoreboard title of %player% to %string%:	
-	trigger:
-		{-bmb::cache::TitleManager}.setScoreboardTitle(expr-1 and expr-2)
-
-local effect set scoreboard line %number% of %player% to %string%:	
-	trigger:
-		{-bmb::cache::TitleManager}.setScoreboardValue(expr-2, expr-1 and expr-3)
+	plugin-version: 1.0.2
 
 function check_yaml(dir: text, value: text, set: text, type: text = "TEXT"):
 	yaml value {_value} from "leaf.bmb.%{_dir}%" is not set:
@@ -65,16 +40,6 @@ expression %item% with [custom] nbt %string%:
 		{_nbti}.mergeCompound(new NBTContainer(expr-2))
 		return {_nbti}.getItem()
 		
-expression %item% with [leaf] lore %texts%:
-	return type: item
-	get:
-		set {_r} to expr-1
-		loop expressions 2:
-			set {_lore} to loop-value-1
-			add 1 to {_line}			
-			set line {_line} of lore of {_r} to colored {_lore}		
-		return {_r}
-
 #From https://forums.skunity.com/resources/mirrorutils.706/ by EWS
 local expression replacer %texts% with %texts% in %text%:
 	return type: text
@@ -182,7 +147,7 @@ command bmb [<text = help>] [<text>] [<text>] [<number>]:
 					set {_lore::*} to yaml list "Menus.Arena-Browser.Lore" from "leaf.bmb.config"
 					replace all "{status}" with yaml value "Settings.StatusFormat.%{-bmb::cache::arena::%loop-value%::status}%" from "leaf.bmb.config" in {_lore::*}
 					replace all "{playing}" with "%size of {-bmb::cache::arena::%loop-value%::ninjas::*}%" in {_lore::*}																	
-					make a gui slot {_slot} of player with {_item} with leaf lore {_lore::*} to run function bmb_join(player, loop-value-1)
+					make a gui slot {_slot} of player with {_item} with lore colored {_lore::*} to run function bmb_join(player, loop-value-1)
 					add 1 to {_slot}
 					if {_slot} is 17 or 26 or 35:
 						add 2 to {_slot}
@@ -196,7 +161,7 @@ command bmb [<text = help>] [<text>] [<text>] [<number>]:
 				loop "PlayedGames", "Wins", "Kills", "Deaths" and "BlocksDestroyed":
 					set {_int} to yaml value "Stats.%loop-value-1%" from "leaf.bmb.playerdata.%uuid of player%"
 					replace all "{%loop-value-1%}" with "%{_int}%" in {_lore::*}
-				make a gui slot 4 of player with paper named yaml value "Menus.Stats.Name" from "leaf.bmb.config" with leaf lore {_lore::*} to do nothing							
+				make a gui slot 4 of player with paper named yaml value "Menus.Stats.Name" from "leaf.bmb.config" with lore colored {_lore::*} to do nothing							
 		if arg-1 is "leave":	
 			bmb_leave(player)
 		if arg-1 is "autojoin":		
@@ -432,7 +397,7 @@ function bmb_leave(p: player):
 		delete scoreboard of {_p}
 		teleport {_p} to yaml value "Locations.MainLobby" from "leaf.bmb.config"		
 		bmb_team_tag({_p}, false)
-        bmb_inventory_manager({_p}, "restore")
+		bmb_inventory_manager({_p}, "restore")
 		wait a tick
 		delete {-bmb::cache::player::%{_p}%::*}	
 		
@@ -441,12 +406,12 @@ function bmb_join(p: player, arena: text):
 		if yaml value "%{_arena}%.State" from "leaf.bmb.arenas" is "ready":
 			if {-bmb::cache::arena::%{_arena}%::status} is "WAITING" or "STARTING":
 				if size of {-bmb::cache::arena::%{_arena}%::ninjas::*} < yaml value "%{_arena}%.Settings.MaxPlayers" from "leaf.bmb.arenas":
-                    bmb_inventory_manager({_p}, "save")
+					bmb_inventory_manager({_p}, "save")
 					set {-bmb::cache::player::%{_p}%::state} to "IN-GAME"
 					set {-bmb::cache::player::%{_p}%::arena} to {_arena}
 					teleport {_p} to yaml value "%{_arena}%.Spawn.Lobby" from "leaf.bmb.arenas"
 					bmb_createBoard({_p}, "BMB-WAITING")
-                    bmb_clear_player({_p})					
+					bmb_clear_player({_p})					
 					set slot yaml value "Settings.Items.Leave.Slot" from "leaf.bmb.config" of {_p} to {-bmb::cache::Items::Leave}
 					add {_p} to {-bmb::cache::arena::%{_arena}%::ninjas::*}		
 					if size of {-bmb::cache::arena::%{_arena}%::ninjas::*} = yaml value "%{_arena}%.Settings.MinPlayers" from "leaf.bmb.arenas":
@@ -537,11 +502,18 @@ function bmb_check_block(arena: text, loc: location):
 			set {bmb::arena::%{_arena}%::OMAE-MO-SHINDEIRU::%location of loop-block%} to location of loop-block
 			set {bmb::arena::%{_arena}%::NANI?!::%location of loop-block%} to type of loop-block
 
+function bmb_explode_check(loc: location, pos1: location, pos2: location) :: boolean:
+	if x-coords of {_loc} is between x-coords of {_pos1} and x-coords of {_pos2}:
+		if y-coords of {_loc} is between y-coords of {_pos1} and y-coords of {_pos2}:
+			if z-coords of {_loc} is between z-coords of {_pos1} and z-coords of {_pos2}:
+				return true
+	return false
+
 on explode:
 	metadata value "BMB_ARENA" of event-entity is set
 	set {_p} to metadata value "BMB_OWNER" of event-entity
 	set {_arena} to metadata value "BMB_ARENA" of event-entity
-	if location of event-location is within yaml value "%{_arena}%.Position.%{-bmb::cache::player::%{_p}%::team}%.1" from "leaf.bmb.arenas" to yaml value "%{_arena}%.Position.%{-bmb::cache::player::%{_p}%::team}%.2" from "leaf.bmb.arenas":
+	if bmb_explode_check(event-location, yaml value "%{_arena}%.Position.%{-bmb::cache::player::%{_p}%::team}%.1" from "leaf.bmb.arenas", yaml value "%{_arena}%.Position.%{-bmb::cache::player::%{_p}%::team}%.2" from "leaf.bmb.arenas") is false:
 		cancel event
 		stop
 	set {_int} to 0
@@ -776,6 +748,9 @@ function bmb_start_countdown(arena: text):
 		
 function bmb_resetarena(arena: text):
 	set {-bmb::cache::arena::%{_arena}%::status} to "RESTARTING"
+	set {_center} to yaml value "%{_arena}%.Spawn.Red" from "leaf.bmb.arenas"		
+	loop all entities in radius 500 of {_center}:
+		clear loop-entity	
 	loop {-bmb::cache::arena::%{_arena}%::ninjas::*}:
 		teleport loop-value-1 to yaml value "Locations.MainLobby" from "leaf.bmb.config"
 		delete scoreboard of loop-value-1		
@@ -785,10 +760,7 @@ function bmb_resetarena(arena: text):
 	#	loop {-bmb::cache::arena::%{_arena}%::ninjas::*}:
 	#		leaf show loop-value-1 to loop-value-2
 	#		leaf show loop-value-2 to loop-value-1
-		wait a tick
-	set {_center} to yaml value "%{_arena}%.Spawn.Red" from "leaf.bmb.arenas"
-	loop all entities in radius 500 of {_center}:
-		clear loop-entity		
+		wait a tick	
 	loop {bmb::arena::%{_arena}%::OMAE-MO-SHINDEIRU::*}:
 		set block at location of {bmb::arena::%{_arena}%::OMAE-MO-SHINDEIRU::%loop-index%} to {bmb::arena::%{_arena}%::NANI?!::%loop-index%}
 		add 1 to {_int}
