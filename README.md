@@ -11,7 +11,7 @@
 
 ## ➭ Dependencies for 1.8.8:
 ***
-> ▪ Skript for 1.8.8 ➥ https://github.com/Matocolotoe/Skript-1.8/releases/tag/2.5
+> ▪ Skript ➥ https://github.com/Matocolotoe/Skript-1.8/releases/tag/2.5
 
 > ▪ TitleManager ➥ https://www.spigotmc.org/resources/titlemanager.1049/
 
