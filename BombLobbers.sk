@@ -16,9 +16,9 @@ import:
 options:
 
 	#do not touch this -_-
-	plugin-version: 1.1.0
+	plugin-version: 1.2.0
 
-function check_yaml(dir: text, value: text, set: text, type: text = "TEXT"):
+function bmb_check_yaml(dir: text, value: text, set: text, type: text = "TEXT"):
 	yaml value {_value} from "leaf.bmb.%{_dir}%" is not set:
 		if {_type} is "text":
 			set yaml value {_value} from "leaf.bmb.%{_dir}%" to {_set}
@@ -744,39 +744,39 @@ on load:
 		load yaml "plugins/BombLobbers/%loop-value-1%.yml" as "leaf.bmb.%loop-value-1%"	
 	loop all players:
 		bmb_stats(loop-value-1, "check")	
-	check_yaml("config", "Settings.ChatFormat.Lobby", "&a{Wins} &8✦ &7{player} &8» &7{message}")	
-	check_yaml("config", "Settings.ChatFormat.Game", "{team} &8➭ &7{player} &8» &7{message}")								
-	check_yaml("config", "Settings.Items.Leave.Item", "magma cream")		
-	check_yaml("config", "Settings.Items.Leave.Name", "&cLeave the game")	
-	check_yaml("config", "Settings.Items.Leave.Slot", "8", "number")					
-	check_yaml("config", "Settings.Timers.In-Lobby", "30", "number")	
-	check_yaml("config", "Settings.TeamFormat.Color.Red", "&c")		
-	check_yaml("config", "Settings.TeamFormat.Name.Red", "&c&nRed&r")	
-	check_yaml("config", "Settings.TeamFormat.Color.Blue", "&b")	
-	check_yaml("config", "Settings.TeamFormat.Name.Blue", "&b&nBlue&r")		
-	check_yaml("config", "Settings.Misc.Tnt-Speed", "2", "number")			
-	check_yaml("config", "Settings.StatusFormat.WAITING", "&aWaiting...")	
-	check_yaml("config", "Settings.StatusFormat.STARTING", "&6Starting...")		
-	check_yaml("config", "Settings.StatusFormat.IN-GAME", "&cIn Game")	
-	check_yaml("config", "Settings.StatusFormat.RESTARTING", "&cRestarting...")										
-	check_yaml("config", "Menus.Arena-Browser.Menu", "&8» &7BombLobbers Arenas")	
-	check_yaml("config", "Menus.Arena-Browser.Name", "&8» &7Arena: &e{arena} &7⤵")	
-	check_yaml("config", "Menus.Arena-Browser.Lore", "&8︼︼︼︼︼︼︼︼︼︼︼︼||||&8➥ &bStatus: &e{status}||&8➥ &bPlaying: &e{playing}||||&8︻︻︻︻︻︻︻︻︻︻︻︻", "list")
-	check_yaml("config", "Menus.Arena-Browser.AutoJoin.Name", "&8▪ &eAutoJoin &8▪")	
-	check_yaml("config", "Menus.Arena-Browser.AutoJoin.Item", "beacon")		
-	check_yaml("config", "Menus.Stats.Menu", "&8︼︼ &7BombLobbers Stats &8︼︼")	
-	check_yaml("config", "Menus.Stats.Name", "&8➭ &e&nYour Stats&r")	
-	check_yaml("config", "Menus.Stats.Lore", "||&8♦ &7PlayedGames &a{PlayedGames}||&8♦ &7Wins &a{Wins}||&8♦ &7Kills &a{Kills}||&8♦ &7Deaths &a{Deaths}||&8♦ &7BlocksDestroyed &a{BlocksDestroyed}", "list")			
-	check_yaml("config", "Scoreboard.Waiting.Name", "&eBomb Lobbers")	
-	check_yaml("config", "Scoreboard.Waiting.Lines", "&7{now}||||&8♦ &fArena: &a{arena}||||&8♦ &fPlayers: &a{players}||||&8♦ &fStarting In: &a{timer}||||&b㋡ &e&nMC.SERVER.NET&r &b㋡", "list")
-	check_yaml("config", "Scoreboard.Game.Name", "&eBomb Lobbers") 	
-	check_yaml("config", "Scoreboard.Game.Lines", "&7{now}||||&7➥ &fYour Status ⤵||||&8▪ &fYour Kills: &a{kills}||&8▪ &fYour Team: &a{team}||||&7➥ &fGame Status ⤵||||&8╔ &c&nRed&r: {RedAlive}||&8╚ &b&nBlue&r: {BlueAlive}||||&eplay.my-cool-server.net", "list")		
-	check_yaml("config", "Messages.Join", "&7{player} &ehas joined to the game.")	
-	check_yaml("config", "Messages.Leave", "&7{player} &eleft the game.")
-	check_yaml("config", "Messages.Death", "&c➜ {victimColor}{victim} &7died")	
-	check_yaml("config", "Messages.Killed", "&c➜ {victimColor}{victim} &7was killed by {killerColor}{killer}")		
-	check_yaml("config", "Messages.Starting", "&eThe game starts in &a{seconds} &eseconds")	
-	check_yaml("config", "Messages.Summary", "&a︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼||||&e✦ &6Bomb Lobbers &e✦||||&7Winners &8➭ {team}||||&a︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻", "list")		
+	bmb_check_yaml("config", "Settings.ChatFormat.Lobby", "&a{Wins} &8✦ &7{player} &8» &7{message}")	
+	bmb_check_yaml("config", "Settings.ChatFormat.Game", "{team} &8➭ &7{player} &8» &7{message}")								
+	bmb_check_yaml("config", "Settings.Items.Leave.Item", "magma cream")		
+	bmb_check_yaml("config", "Settings.Items.Leave.Name", "&cLeave the game")	
+	bmb_check_yaml("config", "Settings.Items.Leave.Slot", "8", "number")					
+	bmb_check_yaml("config", "Settings.Timers.In-Lobby", "30", "number")	
+	bmb_check_yaml("config", "Settings.TeamFormat.Color.Red", "&c")		
+	bmb_check_yaml("config", "Settings.TeamFormat.Name.Red", "&c&nRed&r")	
+	bmb_check_yaml("config", "Settings.TeamFormat.Color.Blue", "&b")	
+	bmb_check_yaml("config", "Settings.TeamFormat.Name.Blue", "&b&nBlue&r")		
+	bmb_check_yaml("config", "Settings.Misc.Tnt-Speed", "2", "number")			
+	bmb_check_yaml("config", "Settings.StatusFormat.WAITING", "&aWaiting...")	
+	bmb_check_yaml("config", "Settings.StatusFormat.STARTING", "&6Starting...")		
+	bmb_check_yaml("config", "Settings.StatusFormat.IN-GAME", "&cIn Game")	
+	bmb_check_yaml("config", "Settings.StatusFormat.RESTARTING", "&cRestarting...")										
+	bmb_check_yaml("config", "Menus.Arena-Browser.Menu", "&8» &7BombLobbers Arenas")	
+	bmb_check_yaml("config", "Menus.Arena-Browser.Name", "&8» &7Arena: &e{arena} &7⤵")	
+	bmb_check_yaml("config", "Menus.Arena-Browser.Lore", "&8︼︼︼︼︼︼︼︼︼︼︼︼||||&8➥ &bStatus: &e{status}||&8➥ &bPlaying: &e{playing}||||&8︻︻︻︻︻︻︻︻︻︻︻︻", "list")
+	bmb_check_yaml("config", "Menus.Arena-Browser.AutoJoin.Name", "&8▪ &eAutoJoin &8▪")	
+	bmb_check_yaml("config", "Menus.Arena-Browser.AutoJoin.Item", "beacon")		
+	bmb_check_yaml("config", "Menus.Stats.Menu", "&8︼︼ &7BombLobbers Stats &8︼︼")	
+	bmb_check_yaml("config", "Menus.Stats.Name", "&8➭ &e&nYour Stats&r")	
+	bmb_check_yaml("config", "Menus.Stats.Lore", "||&8♦ &7PlayedGames &a{PlayedGames}||&8♦ &7Wins &a{Wins}||&8♦ &7Kills &a{Kills}||&8♦ &7Deaths &a{Deaths}||&8♦ &7BlocksDestroyed &a{BlocksDestroyed}", "list")			
+	bmb_check_yaml("config", "Scoreboard.Waiting.Name", "&eBomb Lobbers")	
+	bmb_check_yaml("config", "Scoreboard.Waiting.Lines", "&7{now}||||&8♦ &fArena: &a{arena}||||&8♦ &fPlayers: &a{players}||||&8♦ &fStarting In: &a{timer}||||&b㋡ &e&nMC.SERVER.NET&r &b㋡", "list")
+	bmb_check_yaml("config", "Scoreboard.Game.Name", "&eBomb Lobbers") 	
+	bmb_check_yaml("config", "Scoreboard.Game.Lines", "&7{now}||||&7➥ &fYour Status ⤵||||&8▪ &fYour Kills: &a{kills}||&8▪ &fYour Team: &a{team}||||&7➥ &fGame Status ⤵||||&8╔ &c&nRed&r: {RedAlive}||&8╚ &b&nBlue&r: {BlueAlive}||||&eplay.my-cool-server.net", "list")		
+	bmb_check_yaml("config", "Messages.Join", "&7{player} &ehas joined to the game.")	
+	bmb_check_yaml("config", "Messages.Leave", "&7{player} &eleft the game.")
+	bmb_check_yaml("config", "Messages.Death", "&c➜ {victimColor}{victim} &7died")	
+	bmb_check_yaml("config", "Messages.Killed", "&c➜ {victimColor}{victim} &7was killed by {killerColor}{killer}")		
+	bmb_check_yaml("config", "Messages.Starting", "&eThe game starts in &a{seconds} &eseconds")	
+	bmb_check_yaml("config", "Messages.Summary", "&a︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼︼||||&e✦ &6Bomb Lobbers &e✦||||&7Winners &8➭ {team}||||&a︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻︻", "list")		
 	loop "config" and "arenas":		
 		save yaml "leaf.bmb.%loop-value-1%"		
 	loop yaml nodes with keys "" from "leaf.bmb.arenas":
