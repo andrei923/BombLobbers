@@ -1,6 +1,4 @@
 import:
-	java.util.Arrays 
-	java.util.ArrayList	
 	org.bukkit.Bukkit		
 	org.bukkit.Sound	
 	org.bukkit.Material		
@@ -16,7 +14,7 @@ import:
 options:
 
 	#do not touch this -_-
-	plugin-version: 1.2.0
+	plugin-version: 1.2.1
 
 function bmb_check_yaml(dir: text, value: text, set: text, type: text = "TEXT"):
 	yaml value {_value} from "leaf.bmb.%{_dir}%" is not set:
@@ -706,7 +704,7 @@ function bmb_createBoard(p: player, t: text):
 					replace all "{timer}" with "%{-bmb::cache::arena::%{_arena}%::seconds}%" in {_value}
 					replace all "{players}" with "%size of {-bmb::cache::arena::%{_arena}%::ninjas::*}%" in {_value}
 					replace all "{arena}" with "%{-bmb::cache::player::%{_p}%::arena}%" in {_value}
-					set scoreboard line {_slot} of {_p} to "%{-bmb::cache::SB::%{_slot}%}%%{_value}%"
+					set scoreboard line {_slot} of {_p} to colored "%{-bmb::cache::SB::%{_slot}%}%%{_value}%"
 					add 1 to {_slot}
 			else:
 				stop
@@ -724,7 +722,7 @@ function bmb_createBoard(p: player, t: text):
 					replace all "{BlueAlive}" with "%size of {-bmb::cache::arena::%{-bmb::cache::player::%{_p}%::arena}%::team::Blue::*}%" in {_value}
 					replace all "{kills}" with "%{-bmb::cache::player::%{_p}%::GameKills}%" in {_value}
 					replace all "{team}" with yaml value "Settings.TeamFormat.Name.%{-bmb::cache::player::%{_p}%::team}%" from "leaf.bmb.config" in {_value}					
-					set scoreboard line {_slot} of {_p} to "%{-bmb::cache::SB::%{_slot}%}%%{_value}%"
+					set scoreboard line {_slot} of {_p} to colored "%{-bmb::cache::SB::%{_slot}%}%%{_value}%"
 					add 1 to {_slot}
 				if {-bmb::cache::arena::%{-bmb::cache::player::%{_p}%::arena}%::status} != "RESTARTING":	
 					if "%block at {_p}%" contains "water":
