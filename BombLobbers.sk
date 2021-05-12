@@ -14,7 +14,7 @@ import:
 options:
 
 	#do not touch this -_-
-	plugin-version: 1.2.1
+	plugin-version: 1.1.1
 
 function bmb_check_yaml(dir: text, value: text, set: text, type: text = "TEXT"):
 	yaml value {_value} from "leaf.bmb.%{_dir}%" is not set:
